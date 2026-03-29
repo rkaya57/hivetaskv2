@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Hive | Profil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo">TH</div>
+      <div>
+        <div style="font-weight:800">Task Hive</div>
+        <div class="muted" style="font-size:.84rem">Web3 Görev Platformu</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Görevler</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a class="active" href="profile.html">Profil</a>
+      <a href="withdrawals.html">Çekimler</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+    <div class="actions">
+      <a class="btn-ghost" href="auth.html">Giriş / Kayıt</a>
+      <span class="wallet-chip">Firebase Ready</span>
+    </div>
+  </div>
+</header>
+
+<div class="container page">
+  <div class="layout">
+    <aside class="sidebar">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>Kontrol Merkezi</strong>
+          <div class="muted" style="font-size:.92rem">Task Hive Full Setup</div>
+        </div>
+        <span class="pill">Profile</span>
+      </div>
+      <div class="menu">
+        <a href="dashboard.html"><span class="icon">◫</span><span>Dashboard</span></a>
+        <a href="tasks.html"><span class="icon">✓</span><span>Görev Merkezi</span></a>
+        <a href="leaderboard.html"><span class="icon">★</span><span>Liderlik</span></a>
+        <a class="active" href="profile.html"><span class="icon">👤</span><span>Profil</span></a>
+        <a href="withdrawals.html"><span class="icon">₿</span><span>Çekimler</span></a>
+        <a href="admin.html"><span class="icon">⚙</span><span>Admin Paneli</span></a>
+        <a href="index.html"><span class="icon">⌂</span><span>Landing Page</span></a>
+      </div>
+      <div class="wallet-box" style="margin-top:18px">
+        <div class="muted" style="font-size:.92rem">Profil Özeti</div>
+        <div style="margin-top:12px;font-weight:800" id="sideProfileName">-</div>
+        <div class="muted" id="sideProfileEmail" style="margin-top:6px;word-break:break-all">-</div>
+        <div class="stat-note" id="sideProfileBadge">Rozet: -</div>
+      </div>
+    </aside>
+
+    <main>
+      <section class="section-title">
+        <div>
+          <h1>Profil</h1>
+          <p>Kullanıcının rozet seviyesi, ödeme istatistikleri, son görevleri ve submission geçmişi tek ekranda.</p>
+        </div>
+        <div class="filter-row">
+          <span class="badge">Profile</span>
+          <span class="badge">Badges</span>
+          <span class="badge">Payments</span>
+        </div>
+      </section>
+
+      <div id="profileNotice" class="notice hide" style="margin-bottom:18px"></div>
+
+      <section class="profile-hero">
+        <div class="panel profile-header-card">
+          <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+            <div class="profile-avatar" id="profileAvatar">T</div>
+            <div>
+              <div style="font-size:1.6rem;font-weight:800" id="profileName">-</div>
+              <div class="muted" id="profileEmail">-</div>
+              <div style="margin-top:10px"><span class="pill" id="profileBadge">Newbie</span></div>
+            </div>
+          </div>
+          <div class="profile-stats-grid">
+            <div class="metric-card">
+              <span>Toplam Puan</span>
+              <strong id="profilePoints">0</strong>
+              <div class="muted">genel bakiye</div>
+            </div>
+            <div class="metric-card">
+              <span>Toplam Çekilen</span>
+              <strong id="profilePaidTokens">0 THIVE</strong>
+              <div class="muted">tamamlanan ödemeler</div>
+            </div>
+            <div class="metric-card">
+              <span>Başarı Oranı</span>
+              <strong id="profileSuccessRate">%0</strong>
+              <div class="muted">onaylanan görev oranı</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Rozet ve Durum</h3><div class="muted" style="font-size:.92rem">Puan bazlı seviye</div></div>
+          </div>
+          <div class="panel-body">
+            <div class="list">
+              <div class="list-item">
+                <div class="rank">★</div>
+                <div>
+                  <div class="task-title">Aktif Rozet</div>
+                  <div class="meta"><span id="badgeMetaText">Newbie</span></div>
+                </div>
+                <div class="reward"><span class="status live" id="badgeStatusText">Aktif</span></div>
+              </div>
+              <div class="list-item">
+                <div class="rank">✓</div>
+                <div>
+                  <div class="task-title">Onaylanan Görev</div>
+                  <div class="meta"><span id="approvedMetaCount">0 görev</span></div>
+                </div>
+                <div class="reward"><span class="status live">Tamamlandı</span></div>
+              </div>
+              <div class="list-item">
+                <div class="rank">₿</div>
+                <div>
+                  <div class="task-title">Ödeme Geçmişi</div>
+                  <div class="meta"><span id="paymentMetaCount">0 ödeme</span></div>
+                </div>
+                <div class="reward"><span class="status processing">Takip</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-4" style="margin-top:24px">
+        <div class="metric-card"><span>Onaylanan</span><strong id="profileApprovedCount">0</strong><div class="muted">approved</div></div>
+        <div class="metric-card"><span>Bekleyen</span><strong id="profilePendingCount">0</strong><div class="muted">pending</div></div>
+        <div class="metric-card"><span>Reddedilen</span><strong id="profileRejectedCount">0</strong><div class="muted">rejected</div></div>
+        <div class="metric-card"><span>Çekim Talebi</span><strong id="profileWithdrawalCount">0</strong><div class="muted">all requests</div></div>
+      </section>
+
+      <section class="grid-2" style="margin-top:24px">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Son Tamamlanan Görevler</h3><div class="muted" style="font-size:.92rem">Onaylanmış son görevlerin</div></div>
+          </div>
+          <div class="panel-body">
+            <div id="profileRecentApproved" class="list"></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Son Ödemeler</h3><div class="muted" style="font-size:.92rem">TX hash ile takip edilebilir</div></div>
+          </div>
+          <div class="panel-body">
+            <div id="profileRecentPayments" class="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:24px">
+        <div class="panel-head">
+          <div><h3>Submission Geçmişi</h3><div class="muted" style="font-size:.92rem">Görev gönderimlerinin tam listesi</div></div>
+        </div>
+        <div class="panel-body">
+          <div id="profileSubmissionHistory" class="list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-row">
+    <div>© 2026 Task Hive. Firebase ready sürüm.</div>
+    <div>Profile + badge + payment stats</div>
+  </div>
+</footer>
+<script src="app.js"></script>
+<script type="module" src="profile.js"></script>
+</body>
+</html>
