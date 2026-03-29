@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Hive | Çekimler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a class="brand" href="index.html">
+      <div class="logo">TH</div>
+      <div>
+        <div style="font-weight:800">Task Hive</div>
+        <div class="muted" style="font-size:.84rem">Web3 Görev Platformu</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="tasks.html">Görevler</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a class="active" href="withdrawals.html">Çekimler</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+    <div class="actions">
+      <a class="btn-ghost" href="auth.html">Giriş / Kayıt</a>
+      <span class="wallet-chip">Firebase Ready</span>
+    </div>
+  </div>
+</header>
+
+<div class="container page">
+  <div class="layout">
+    <aside class="sidebar">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>Kontrol Merkezi</strong>
+          <div class="muted" style="font-size:.92rem">Task Hive Full Setup</div>
+        </div>
+        <span class="pill">Payouts</span>
+      </div>
+      <div class="menu">
+        <a href="dashboard.html"><span class="icon">◫</span><span>Dashboard</span></a>
+        <a href="tasks.html"><span class="icon">✓</span><span>Görev Merkezi</span></a>
+        <a href="leaderboard.html"><span class="icon">★</span><span>Liderlik</span></a>
+        <a class="active" href="withdrawals.html"><span class="icon">₿</span><span>Çekimler</span></a>
+        <a href="admin.html"><span class="icon">⚙</span><span>Admin Paneli</span></a>
+        <a href="index.html"><span class="icon">⌂</span><span>Landing Page</span></a>
+      </div>
+      <div class="wallet-box" style="margin-top:18px">
+        <div class="muted" style="font-size:.92rem">Dönüşüm Bilgisi</div>
+        <div class="kv" style="margin-top:10px">
+          <div><span>Puan / Token</span><strong id="pointsPerTokenLabel">100</strong></div>
+          <div><span>Mevcut Puan</span><strong id="availablePointsLabel">0</strong></div>
+          <div><span>Talep Edilebilir</span><strong id="availableTokenLabel">0 TOKEN</strong></div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <section class="section-title">
+        <div>
+          <h1>Çekim Talepleri</h1>
+          <p>Puanını token karşılığına çevir, cüzdan adresini yaz ve istediğin miktarda çekim talebi gönder. Admin manuel gönderim yapıp TX hash ekler.</p>
+        </div>
+        <div class="filter-row">
+          <span class="badge">Manual Payout</span>
+          <span class="badge">TX Hash Proof</span>
+          <span class="badge">Wallet Address</span>
+        </div>
+      </section>
+
+      <div id="withdrawNotice" class="notice hide" style="margin-bottom:18px"></div>
+
+      <section class="grid-4">
+        <div class="metric-card"><span>Kullanıcı</span><strong id="wUserName">-</strong><div class="muted" id="wUserEmail">-</div></div>
+        <div class="metric-card"><span>Toplam Puan</span><strong id="wPoints">0</strong><div class="muted">kullanılabilir bakiye</div></div>
+        <div class="metric-card"><span>Çekilebilir Token</span><strong id="wAvailableTokens">0</strong><div class="muted">puan dönüşümü</div></div>
+        <div class="metric-card"><span>Bekleyen Talep</span><strong id="wPendingCount">0</strong><div class="muted">withdrawals.status=pending</div></div>
+      </section>
+
+      <section class="grid-2" style="margin-top:24px">
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Yeni Çekim Talebi</h3><div class="muted" style="font-size:.92rem">withdrawals koleksiyonuna kaydeder</div></div>
+          </div>
+          <div class="panel-body">
+            <div class="notice-card" style="margin-bottom:18px">
+              <strong style="display:block;margin-bottom:8px">Dönüşüm Oranı</strong>
+              <p class="muted" style="line-height:1.8">
+                <strong style="color:#eef4ff">100 puan = 1 THIVE</strong><br>
+                İstersen bu oranı daha sonra tek bir JS sabitinden değiştirebiliriz.
+              </p>
+            </div>
+            <form id="withdrawForm" class="form-grid">
+              <div class="split">
+                <div class="input-row">
+                  <label>Çekim cüzdan adresi</label>
+                  <input id="walletAddress" type="text" placeholder="Token göndereceğin cüzdan adresi" required />
+                </div>
+                <div class="input-row">
+                  <label>İstenen token miktarı</label>
+                  <input id="tokenAmount" type="number" step="0.0001" min="0.0001" placeholder="Örn: 15" required />
+                </div>
+              </div>
+              <div class="split">
+                <div class="input-row">
+                  <label>Karşılık gelen puan</label>
+                  <input id="pointAmount" type="number" placeholder="Otomatik hesaplanır" readonly />
+                </div>
+                <div class="input-row">
+                  <label>Açıklama</label>
+                  <input id="withdrawNote" type="text" placeholder="İsteğe bağlı not" />
+                </div>
+              </div>
+              <button class="btn" type="submit">Çekim Talebi Gönder</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><h3>Çekim Özeti</h3><div class="muted" style="font-size:.92rem">Bakiye ve geçmiş</div></div>
+          </div>
+          <div class="panel-body">
+            <div class="kv">
+              <div><span>Onaylanan ödeme</span><strong id="paidCountLabel">0</strong></div>
+              <div><span>Reddedilen talep</span><strong id="rejectedCountLabel">0</strong></div>
+              <div><span>Toplam talep</span><strong id="totalWithdrawalCountLabel">0</strong></div>
+              <div><span>Toplam çekilen token</span><strong id="totalPaidTokenLabel">0 THIVE</strong></div>
+            </div>
+            <div class="notice-card" style="margin-top:18px">
+              <strong style="display:block;margin-bottom:8px">Akış</strong>
+              <p class="muted" style="line-height:1.8">
+                1. Kullanıcı talep gönderir<br>
+                2. Admin adresi ve miktarı kontrol eder<br>
+                3. Manuel transfer yapar<br>
+                4. TX hash girerek ödemeyi tamamlar<br>
+                5. Kullanıcı ödeme geçmişinde zincirden kontrol eder
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:24px">
+        <div class="panel-head">
+          <div><h3>Aldığım Ödemeler</h3><div class="muted" style="font-size:.92rem">Cüzdan ve TX hash geçmişi</div></div>
+        </div>
+        <div class="panel-body">
+          <div id="withdrawHistoryList" class="list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-row">
+    <div>© 2026 Task Hive. Firebase ready sürüm.</div>
+    <div>Withdrawals workflow</div>
+  </div>
+</footer>
+<script src="app.js"></script>
+<script type="module" src="withdrawals.js"></script>
+</body>
+</html>
