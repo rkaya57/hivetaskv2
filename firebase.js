@@ -34,12 +34,13 @@ import {
   Firebase Console > Project settings > Your apps > SDK setup and configuration
 */
 const firebaseConfig = {
-  apiKey: "BURAYA_API_KEY",
-  authDomain: "BURAYA_AUTH_DOMAIN",
-  projectId: "BURAYA_PROJECT_ID",
-  storageBucket: "BURAYA_STORAGE_BUCKET",
-  messagingSenderId: "BURAYA_MESSAGING_SENDER_ID",
-  appId: "BURAYA_APP_ID"
+  apiKey: "AIzaSyAE5a-0MmLW0zkuS3ya1veQZvTnyNIbzV4",
+  authDomain: "hive-c5d27.firebaseapp.com",
+  projectId: "hive-c5d27",
+  storageBucket: "hive-c5d27.firebasestorage.app",
+  messagingSenderId: "1015325344229",
+  appId: "1:1015325344229:web:803734ef6a386169cbaf0c",
+  measurementId: "G-TGBFWY2LNY"
 };
 
 const app = initializeApp(firebaseConfig);
